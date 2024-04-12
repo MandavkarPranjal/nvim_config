@@ -97,6 +97,7 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+vim.o.shell = 'powershell.exe'
 
 -- TIP: Disable arrow keys in normal mode
 -- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -226,7 +227,9 @@ require('lazy').setup({
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
-      { 'nvim-tree/nvim-web-devicons', enabled = vim.g.have_nerd_font },
+      { 'nvim-tree/nvim-web-devicons',
+     --   enabled = vim.g.have_nerd_font 
+      },
     },
     config = function()
       -- Telescope is a fuzzy finder that comes with a lot of different things that
@@ -506,6 +509,21 @@ local function toggle_telescope(harpoon_files)
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
+      -- require("lspconfig").gopls.setup {
+      --  capabilities = capabilities,
+      --  cmd = {"gopls"},
+      --  filetypes={"go", "gomod", "gowork", "gotmpl" },
+      --  root_dir = require "lspconfig.util".root_pattern("go.work", "go.mod", ".git"),
+      --  settings = {
+      --    gopls = {
+      --      completeUnimported = true,
+      --      usePlaceholders = true,
+      --      analyses = {
+      --        unusedparams = true,
+      --      },
+      --    },
+      --  },
+      --}
       --
       --  Add any additional override configuration in the following tables. Available keys are:
       --  - cmd (table): Override the default command used to start the server
@@ -515,9 +533,12 @@ local function toggle_telescope(harpoon_files)
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-        -- gopls = {},
+         gopls = {
+          cmd = { "gopls" },
+          filetypes = { "go", "gomod", "gowork", "gotmpl" },
+        },
         -- pyright = {},
-        -- rust_analyzer = {},
+         rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
