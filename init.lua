@@ -497,6 +497,7 @@ local function toggle_telescope(harpoon_files)
               callback = vim.lsp.buf.clear_references,
             })
           end
+
         end,
       })
 
