@@ -381,6 +381,15 @@ local function toggle_telescope(harpoon_files)
     end
   },
 
+  {
+    "pocco81/auto-save.nvim",
+    config = function()
+        require("auto-save").setup({
+   })
+        vim.keymap.set("n", "<C-s>", ":ASToggle<CR>", { noremap = true })
+    end
+  },
+
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
     dependencies = {
