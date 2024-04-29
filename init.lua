@@ -331,7 +331,22 @@ require('lazy').setup({
     end
   },
 
-  { 
+  {
+  "folke/flash.nvim",
+  event = "VeryLazy",
+  ---@type Flash.Config
+  opts = {},
+  -- stylua: ignore
+  keys = {
+    { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+    { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+    { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+    { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+    { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+  },
+  },
+
+  {
      "morhetz/gruvbox",
      config = function()
          vim.cmd("colorscheme gruvbox")
@@ -395,8 +410,7 @@ local function toggle_telescope(harpoon_files)
         }):find()
       end
 
-      vim.keymap.set("n", "<c-e>", function() toggle_telescope(harpoon:list()) end,
-      { desc = "open harpoon window" })
+      vim.keymap.set("n", "<c-e>", function() toggle_telescope(harpoon:list()) end, { desc = "open harpoon window" })
     end
   },
 
@@ -538,21 +552,21 @@ local function toggle_telescope(harpoon_files)
 
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
-      -- require("lspconfig").gopls.setup {
-      --  capabilities = capabilities,
-      --  cmd = {"gopls"},
-      --  filetypes={"go", "gomod", "gowork", "gotmpl" },
-      --  root_dir = require "lspconfig.util".root_pattern("go.work", "go.mod", ".git"),
-      --  settings = {
-      --    gopls = {
-      --      completeUnimported = true,
-      --      usePlaceholders = true,
-      --      analyses = {
-      --        unusedparams = true,
-      --      },
-      --    },
-      --  },
-      --}
+      require("lspconfig").gopls.setup {
+       capabilities = capabilities,
+       cmd = {"gopls"},
+       filetypes={"go", "gomod", "gowork", "gotmpl" },
+       root_dir = require "lspconfig.util".root_pattern("go.work", "go.mod", ".git"),
+        settings = {
+         gopls = {
+           completeUnimported = true,
+           usePlaceholders = true,
+           analyses = {
+             unusedparams = true,
+            },
+          },
+        },
+      }
       --
       --  Add any additional override configuration in the following tables. Available keys are:
       --  - cmd (table): Override the default command used to start the server
@@ -623,6 +637,57 @@ local function toggle_telescope(harpoon_files)
       }
     end,
   },
+
+  -- completions
+  {
+        "hrsh7th/cmp-nvim-lsp"
+    },
+    {
+        "L3MON4D3/LuaSnip",
+        dependencies = {
+            "saadparwaiz1/cmp_luasnip",
+            "rafamadriz/friendly-snippets"
+        },
+    },
+    {
+        "hrsh7th/nvim-cmp",
+        dependencies = {
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            "hrsh7th/cmp-cmdline",
+            "saadparwaiz1/cmp_luasnip",
+        },
+        config = function()
+              local cmp = require'cmp'
+            require("luasnip.loaders.from_vscode").lazy_load()
+                 cmp.setup({
+                  snippet = {
+                    -- REQUIRED - you must specify a snippet engine
+                    expand = function(args)
+                      require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+                    end,
+                  },
+                  window = {
+                    completion = cmp.config.window.bordered(),
+                    documentation = cmp.config.window.bordered(),
+                  },
+                  mapping = cmp.mapping.preset.insert({
+                    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+                    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+                    ['<C-Space>'] = cmp.mapping.complete(),
+                    ['<C-e>'] = cmp.mapping.abort(),
+                    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+                  }),
+                  sources = cmp.config.sources({
+                   -- { name = 'nvim_lsp' },
+                    { name = 'luasnip' }, -- For luasnip users.
+                  }, {
+                    { name = 'buffer' },
+                  })
+              })
+        end
+    },
 
   { -- Autoformat
     'stevearc/conform.nvim',
