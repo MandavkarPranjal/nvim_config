@@ -221,7 +221,8 @@ require('lazy').setup({
         -- `cond` is a condition used to determine whether this plugin should be
         -- installed and loaded.
         cond = function()
-          return vim.fn.executable 'make' == 1
+          
+          -- return vim.fn.executable 'make' == 1
         end,
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
@@ -287,6 +288,9 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>gB', builtin.git_branches, { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>gb', builtin.git_bcommits, { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = '[ ] Find existing buffers' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
@@ -331,6 +335,9 @@ require('lazy').setup({
     end
   },
 
+  {
+    "tpope/vim-fugitive"
+  },
   -- lazy.nvim
 -- {
 --   "folke/noice.nvim",
