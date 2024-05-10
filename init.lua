@@ -169,6 +169,16 @@ require('lazy').setup({
   --    require('gitsigns').setup({ ... })
   --
   -- See `:help gitsigns` to understand what the configuration keys do
+    {
+    "NeogitOrg/neogit",
+    dependencies = {
+      "nvim-lua/plenary.nvim",         -- required
+      "sindrets/diffview.nvim",        -- optional - Diff integration
+      -- Only one of these is needed, not both.
+      "nvim-telescope/telescope.nvim", -- optional
+    },
+    config = true
+  },
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
     opts = {
@@ -438,7 +448,7 @@ require('lazy').setup({
 
       vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
       vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
-      vim.keymap.set("n", "<C-n>", function() harpoon:list():select(3) end)
+      vim.keymap.set("n", "<C-m>", function() harpoon:list():select(3) end)
       vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
 
 -- Toggle previous & next buffers stored within Harpoon list
@@ -472,7 +482,6 @@ local function toggle_telescope(harpoon_files)
     config = function()
         require("auto-save").setup({
    })
-        vim.keymap.set("n", "<C-s>", ":ASToggle<CR>", { noremap = true })
     end
   },
 
