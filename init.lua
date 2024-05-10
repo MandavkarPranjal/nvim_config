@@ -180,6 +180,14 @@ require('lazy').setup({
         changedelete = { text = '~' },
       },
     },
+    config = function()
+        require("gitsigns").setup()
+
+        vim.keymap.set('n', '<leader>gp', ':Gitsigns preview_hunk<CR>', {})
+        vim.keymap.set('n', '<leader>gr', ':Gitsigns reset_hunk<CR>', {})
+        vim.keymap.set('n', '<leader>gs', ':Gitsigns stage_hunk<CR>', {})
+        vim.keymap.set('n', '<leader>gt', ':Gitsigns toggle_current_line_blame<CR>', {})
+    end
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
