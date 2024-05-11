@@ -14,7 +14,7 @@ vim.cmd("set softtabstop=4")
 vim.cmd("set shiftwidth=4")
 
 -- Set to true if you have a Nerd Font installed
-vim.g.have_nerd_font = false
+vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
 -- See `:help vim.opt`
@@ -36,7 +36,9 @@ vim.opt.showmode = false
 -- Sync clipboard between OS and Neovim.
 --  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
-vim.opt.clipboard = 'unnamedplus'
+-- vim.opt.clipboard = 'unnamedplus'
+vim.keymap.set({'v'}, '<leader>y', '"+y"')
+vim.keymap.set({'n'}, '<leader>y', '"+y$')
 
 -- Enable break indent
 vim.opt.breakindent = true
@@ -66,7 +68,7 @@ vim.opt.splitbelow = true
 --  See `:help 'list'`
 --  and `:help 'listchars'`
 vim.opt.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+vim.opt.listchars = { trail = '·', nbsp = '␣' }
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
@@ -169,7 +171,7 @@ require('lazy').setup({
   --    require('gitsigns').setup({ ... })
   --
   -- See `:help gitsigns` to understand what the configuration keys do
-    {
+  {
     "NeogitOrg/neogit",
     dependencies = {
       "nvim-lua/plenary.nvim",         -- required
@@ -239,7 +241,6 @@ require('lazy').setup({
         -- `cond` is a condition used to determine whether this plugin should be
         -- installed and loaded.
         cond = function()
-          
           -- return vim.fn.executable 'make' == 1
         end,
       },
@@ -299,16 +300,16 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>sk', builtin.keymaps, { desc = '[S]earch [K]eymaps' })
       vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = '[S]earch [F]iles' })
       vim.keymap.set('n', '<leader>ss', builtin.builtin, { desc = '[S]earch [S]elect Telescope' })
-      vim.keymap.set('n', '<leader>gf', builtin.git_files , { desc = '[S]earch [S]elect Telescope' })
+      vim.keymap.set('n', '<leader>gf', builtin.git_files , { desc = '[S]earch [G]it Telescope' })
       vim.keymap.set('n', '<leader>sw', builtin.grep_string, { desc = '[S]earch current [W]ord' })
       vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = '[S]earch by [G]rep' })
       vim.keymap.set('n', '<leader>sd', builtin.diagnostics, { desc = '[S]earch [D]iagnostics' })
       vim.keymap.set('n', '<leader>sr', builtin.resume, { desc = '[S]earch [R]esume' })
       vim.keymap.set('n', '<leader>s.', builtin.oldfiles, { desc = '[S]earch Recent Files ("." for repeat)' })
       vim.keymap.set('n', '<leader><leader>', builtin.buffers, { desc = '[ ] Find existing buffers' })
-      vim.keymap.set('n', '<leader>gB', builtin.git_branches, { desc = '[ ] Find existing buffers' })
-      vim.keymap.set('n', '<leader>gb', builtin.git_bcommits, { desc = '[ ] Find existing buffers' })
-      vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = '[ ] Find existing buffers' })
+      vim.keymap.set('n', '<leader>gB', builtin.git_branches, { desc = '[C]heckout [B}ranch' })
+      vim.keymap.set('n', '<leader>gb', builtin.git_bcommits, { desc = '[G]it [F]ile [C]ommit' })
+      vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = '[G]it [C]ommits' })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
@@ -477,13 +478,13 @@ local function toggle_telescope(harpoon_files)
     end
   },
 
-  {
-    "pocco81/auto-save.nvim",
-    config = function()
-        require("auto-save").setup({
-   })
-    end
-  },
+  -- {
+  --   "pocco81/auto-save.nvim",
+  --   config = function()
+  --       require("auto-save").setup({
+  --  })
+  --   end
+  -- },
 
   { -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
