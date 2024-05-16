@@ -3,7 +3,7 @@
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
-vim.cmd("set mouse -=a")
+-- vim.cmd("set mouse -=a")
 vim.cmd("set scrolloff=8")
 vim.cmd("set number")
 vim.cmd("set relativenumber")
@@ -101,11 +101,19 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
 vim.o.shell = 'powershell.exe'
 
+vim.keymap.set("n", "<C-d>", "<C-d>zz")
+vim.keymap.set("n", "<C-u>", "<C-u>zz")
+
+vim.keymap.set("n", "n", "nzz")
+vim.keymap.set("n", "N", "Nzz")
+
+vim.keymap.set("n", "dw", "dwi")
+
 -- TIP: Disable arrow keys in normal mode
--- vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
--- vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
--- vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
--- vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
+vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
+vim.keymap.set('n', '<right>', '<cmd>echo "Use l to move!!"<CR>')
+vim.keymap.set('n', '<up>', '<cmd>echo "Use k to move!!"<CR>')
+vim.keymap.set('n', '<down>', '<cmd>echo "Use j to move!!"<CR>')
 
 -- Keybinds to make split navigation easier.
 --  Use CTRL+<hjkl> to switch between windows
@@ -115,6 +123,9 @@ vim.keymap.set('n', '<C-h>', '<C-w><C-h>', { desc = 'Move focus to the left wind
 vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right window' })
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
+
+vim.keymap.set('n', '<C-j>', ':cnext<CR>', { desc = 'Move to next quick-fix list file' })
+vim.keymap.set('n', '<C-k>', ':cprev<CR>', { desc = 'Move to prev quick-fix list file' })
 
 -- [[ Basic Autocommands ]]
 --  See `:help lua-guide-autocommands`
@@ -193,12 +204,12 @@ require('lazy').setup({
       },
     },
     config = function()
-        require("gitsigns").setup()
+      require("gitsigns").setup()
 
-        vim.keymap.set('n', '<leader>gp', ':Gitsigns preview_hunk<CR>', {})
-        vim.keymap.set('n', '<leader>gr', ':Gitsigns reset_hunk<CR>', {})
-        vim.keymap.set('n', '<leader>gs', ':Gitsigns stage_hunk<CR>', {})
-        vim.keymap.set('n', '<leader>gt', ':Gitsigns toggle_current_line_blame<CR>', {})
+      vim.keymap.set('n', '<leader>gp', ':Gitsigns preview_hunk<CR>', {})
+      vim.keymap.set('n', '<leader>gr', ':Gitsigns reset_hunk<CR>', {})
+      vim.keymap.set('n', '<leader>gs', ':Gitsigns stage_hunk<CR>', {})
+      vim.keymap.set('n', '<leader>gt', ':Gitsigns toggle_current_line_blame<CR>', {})
     end
   },
 
@@ -241,14 +252,14 @@ require('lazy').setup({
         -- `cond` is a condition used to determine whether this plugin should be
         -- installed and loaded.
         cond = function()
-          -- return vim.fn.executable 'make' == 1
+          return vim.fn.executable 'make' == 1
         end,
       },
       { 'nvim-telescope/telescope-ui-select.nvim' },
 
       -- Useful for getting pretty icons, but requires a Nerd Font.
       { 'nvim-tree/nvim-web-devicons',
-     --   enabled = vim.g.have_nerd_font 
+        --   enabled = vim.g.have_nerd_font 
       },
     },
     config = function()
@@ -336,9 +347,19 @@ require('lazy').setup({
     end,
   },
 
-
+  -- This is my oil config
+  {
+    'stevearc/oil.nvim',
+    opts = {},
+    -- Optional dependencies
+    dependencies = { "nvim-tree/nvim-web-devicons" },
+    config = function()
+      require("oil").setup()
+      vim.keymap.set("n", "-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
+    end
+  },
   --This is my config for neo-tree
-    {
+  {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
     dependencies = {
@@ -358,73 +379,73 @@ require('lazy').setup({
     "tpope/vim-fugitive"
   },
   -- lazy.nvim
--- {
---   "folke/noice.nvim",
---   event = "VeryLazy",
---   opts = {
---     -- add any options here
---   },
---   dependencies = {
---     -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
---     "MunifTanjim/nui.nvim",
---     -- OPTIONAL:
---     --   `nvim-notify` is only needed, if you want to use the notification view.
---     --   If not available, we use `mini` as the fallback
---     -- "rcarriga/nvim-notify",
---     },
---     config = function ()
---       require("noice").setup({
---   lsp = {
---     -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
---     override = {
---       ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
---       ["vim.lsp.util.stylize_markdown"] = true,
---       ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
---     },
---   },
---   -- you can enable a preset for easier configuration
---   -- presets = {
---   --   bottom_search = true, -- use a classic bottom cmdline for search
---   --   command_palette = true, -- position the cmdline and popupmenu together
---   --   long_message_to_split = true, -- long messages will be sent to a split
---   --   inc_rename = false, -- enables an input dialog for inc-rename.nvim
---   --   lsp_doc_border = false, -- add a border to hover docs and signature help
---   -- },
--- })
---     end
--- },
+  -- {
+  --   "folke/noice.nvim",
+  --   event = "VeryLazy",
+  --   opts = {
+  --     -- add any options here
+  --   },
+  --   dependencies = {
+  --     -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+  --     "MunifTanjim/nui.nvim",
+  --     -- OPTIONAL:
+  --     --   `nvim-notify` is only needed, if you want to use the notification view.
+  --     --   If not available, we use `mini` as the fallback
+  --     -- "rcarriga/nvim-notify",
+  --     },
+  --     config = function ()
+  --       require("noice").setup({
+  --   lsp = {
+  --     -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
+  --     override = {
+  --       ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+  --       ["vim.lsp.util.stylize_markdown"] = true,
+  --       ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
+  --     },
+  --   },
+  --   -- you can enable a preset for easier configuration
+  --   -- presets = {
+  --   --   bottom_search = true, -- use a classic bottom cmdline for search
+  --   --   command_palette = true, -- position the cmdline and popupmenu together
+  --   --   long_message_to_split = true, -- long messages will be sent to a split
+  --   --   inc_rename = false, -- enables an input dialog for inc-rename.nvim
+  --   --   lsp_doc_border = false, -- add a border to hover docs and signature help
+  --   -- },
+  -- })
+  --     end
+  -- },
 
   {
-  "folke/flash.nvim",
-  event = "VeryLazy",
-  ---@type Flash.Config
-  opts = {},
-  -- stylua: ignore
-  keys = {
-    { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-    { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-    { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-    { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-    { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-  },
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    ---@type Flash.Config
+    opts = {},
+    -- stylua: ignore
+    keys = {
+      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+    },
   },
 
   {
-     "morhetz/gruvbox",
-     config = function()
-         vim.cmd("colorscheme gruvbox")
-     end
+    "morhetz/gruvbox",
+    config = function()
+      vim.cmd("colorscheme gruvbox")
+    end
   },
 
   {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-        require('lualine').setup({
+      require('lualine').setup({
         options = {
-        theme = 'dracula'
-      }
-    })
+          theme = 'dracula'
+        }
+      })
     end
   },
 
@@ -445,32 +466,32 @@ require('lazy').setup({
       vim.keymap.set("n", "<leader>ha", function() harpoon:list():add() end)
       vim.keymap.set("n", "<leader>hd", function () harpoon:list():remove()end)
       -- This functionality is done just below Telescope config for harpoon
---      vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
+      --      vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 
       vim.keymap.set("n", "<C-h>", function() harpoon:list():select(1) end)
       vim.keymap.set("n", "<C-t>", function() harpoon:list():select(2) end)
       vim.keymap.set("n", "<C-m>", function() harpoon:list():select(3) end)
       vim.keymap.set("n", "<C-s>", function() harpoon:list():select(4) end)
 
--- Toggle previous & next buffers stored within Harpoon list
+      -- Toggle previous & next buffers stored within Harpoon list
       vim.keymap.set("n", "<C-S-O>", function() harpoon:list():prev() end)
       vim.keymap.set("n", "<leader>oo", function() harpoon:list():next() end)
 
       -- basic telescope configuration
-local conf = require("telescope.config").values
-local function toggle_telescope(harpoon_files)
-    local file_paths = {}
-    for _, item in ipairs(harpoon_files.items) do
-        table.insert(file_paths, item.value)
-    end
+      local conf = require("telescope.config").values
+      local function toggle_telescope(harpoon_files)
+        local file_paths = {}
+        for _, item in ipairs(harpoon_files.items) do
+          table.insert(file_paths, item.value)
+        end
 
-      require("telescope.pickers").new({}, {
-        prompt_title = "Harpoon",
-        finder = require("telescope.finders").new_table({
+        require("telescope.pickers").new({}, {
+          prompt_title = "Harpoon",
+          finder = require("telescope.finders").new_table({
             results = file_paths,
-        }),
+          }),
           previewer = conf.file_previewer({}),
-            sorter = conf.generic_sorter({}),
+          sorter = conf.generic_sorter({}),
         }):find()
       end
 
@@ -617,16 +638,16 @@ local function toggle_telescope(harpoon_files)
       -- Enable the following language servers
       --  Feel free to add/remove any LSPs that you want here. They will automatically be installed.
       require("lspconfig").gopls.setup {
-       capabilities = capabilities,
-       cmd = {"gopls"},
-       filetypes={"go", "gomod", "gowork", "gotmpl" },
-       root_dir = require "lspconfig.util".root_pattern("go.work", "go.mod", ".git"),
+        capabilities = capabilities,
+        cmd = {"gopls"},
+        filetypes={"go", "gomod", "gowork", "gotmpl" },
+        root_dir = require "lspconfig.util".root_pattern("go.work", "go.mod", ".git"),
         settings = {
-         gopls = {
-           completeUnimported = true,
-           usePlaceholders = true,
-           analyses = {
-             unusedparams = true,
+          gopls = {
+            completeUnimported = true,
+            usePlaceholders = true,
+            analyses = {
+              unusedparams = true,
             },
           },
         },
@@ -640,12 +661,12 @@ local function toggle_telescope(harpoon_files)
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
         -- clangd = {},
-         gopls = {
+        gopls = {
           cmd = { "gopls" },
           filetypes = { "go", "gomod", "gowork", "gotmpl" },
         },
         -- pyright = {},
-         rust_analyzer = {},
+        rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -704,54 +725,54 @@ local function toggle_telescope(harpoon_files)
 
   -- completions
   {
-        "hrsh7th/cmp-nvim-lsp"
+    "hrsh7th/cmp-nvim-lsp"
+  },
+  {
+    "L3MON4D3/LuaSnip",
+    dependencies = {
+      "saadparwaiz1/cmp_luasnip",
+      "rafamadriz/friendly-snippets"
     },
-    {
-        "L3MON4D3/LuaSnip",
-        dependencies = {
-            "saadparwaiz1/cmp_luasnip",
-            "rafamadriz/friendly-snippets"
+  },
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "hrsh7th/cmp-cmdline",
+      "saadparwaiz1/cmp_luasnip",
+    },
+    config = function()
+      local cmp = require'cmp'
+      require("luasnip.loaders.from_vscode").lazy_load()
+      cmp.setup({
+        snippet = {
+          -- REQUIRED - you must specify a snippet engine
+          expand = function(args)
+            require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
+          end,
         },
-    },
-    {
-        "hrsh7th/nvim-cmp",
-        dependencies = {
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
-            "hrsh7th/cmp-cmdline",
-            "saadparwaiz1/cmp_luasnip",
+        window = {
+          completion = cmp.config.window.bordered(),
+          documentation = cmp.config.window.bordered(),
         },
-        config = function()
-              local cmp = require'cmp'
-            require("luasnip.loaders.from_vscode").lazy_load()
-                 cmp.setup({
-                  snippet = {
-                    -- REQUIRED - you must specify a snippet engine
-                    expand = function(args)
-                      require('luasnip').lsp_expand(args.body) -- For `luasnip` users.
-                    end,
-                  },
-                  window = {
-                    completion = cmp.config.window.bordered(),
-                    documentation = cmp.config.window.bordered(),
-                  },
-                  mapping = cmp.mapping.preset.insert({
-                    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-                    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-                    ['<C-Space>'] = cmp.mapping.complete(),
-                    ['<C-e>'] = cmp.mapping.abort(),
-                    ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
-                  }),
-                  sources = cmp.config.sources({
-                   -- { name = 'nvim_lsp' },
-                    { name = 'luasnip' }, -- For luasnip users.
-                  }, {
-                    { name = 'buffer' },
-                  })
-              })
-        end
-    },
+        mapping = cmp.mapping.preset.insert({
+          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-Space>'] = cmp.mapping.complete(),
+          ['<C-e>'] = cmp.mapping.abort(),
+          ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+        }),
+        sources = cmp.config.sources({
+          -- { name = 'nvim_lsp' },
+          { name = 'luasnip' }, -- For luasnip users.
+        }, {
+            { name = 'buffer' },
+          })
+      })
+    end
+  },
 
   { -- Autoformat
     'stevearc/conform.nvim',
@@ -917,41 +938,41 @@ local function toggle_telescope(harpoon_files)
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
   -- { -- Collection of various small independent plugins/modules
-    -- 'echasnovski/mini.nvim',
-    -- config = function()
-      -- -- Better Around/Inside textobjects
-      -- --
-      -- -- Examples:
-      --  - va)  - [V]isually select [A]round [)]paren
-      -- --  - yinq - [Y]ank [I]nside [N]ext [']quote
-      -- --  - ci'  - [C]hange [I]nside [']quote
-      -- require('mini.ai').setup { n_lines = 500 }
+  -- 'echasnovski/mini.nvim',
+  -- config = function()
+  -- -- Better Around/Inside textobjects
+  -- --
+  -- -- Examples:
+  --  - va)  - [V]isually select [A]round [)]paren
+  -- --  - yinq - [Y]ank [I]nside [N]ext [']quote
+  -- --  - ci'  - [C]hange [I]nside [']quote
+  -- require('mini.ai').setup { n_lines = 500 }
 
-      -- -- Add/delete/replace surroundings (brackets, quotes, etc.)
-      -- --
-      -- -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
-      -- -- - sd'   - [S]urround [D]elete [']quotes
-      -- -- - sr)'  - [S]urround [R]eplace [)] [']
-      -- require('mini.surround').setup()
+  -- -- Add/delete/replace surroundings (brackets, quotes, etc.)
+  -- --
+  -- -- - saiw) - [S]urround [A]dd [I]nner [W]ord [)]Paren
+  -- -- - sd'   - [S]urround [D]elete [']quotes
+  -- -- - sr)'  - [S]urround [R]eplace [)] [']
+  -- require('mini.surround').setup()
 
-      -- -- Simple and easy statusline.
-      -- --  You could remove this setup call if you don't like it,
-      -- --  and try some other statusline plugin
-      -- local statusline = require 'mini.statusline'
-      -- -- set use_icons to true if you have a Nerd Font
-      -- statusline.setup { use_icons = vim.g.have_nerd_font }
+  -- -- Simple and easy statusline.
+  -- --  You could remove this setup call if you don't like it,
+  -- --  and try some other statusline plugin
+  -- local statusline = require 'mini.statusline'
+  -- -- set use_icons to true if you have a Nerd Font
+  -- statusline.setup { use_icons = vim.g.have_nerd_font }
 
-      -- -- You can configure sections in the statusline by overriding their
-      -- -- default behavior. For example, here we set the section for
-      -- -- cursor location to LINE:COLUMN
-      -- ---@diagnostic disable-next-line: duplicate-set-field
-      -- statusline.section_location = function()
-        -- return '%2l:%-2v'
-      -- end
+  -- -- You can configure sections in the statusline by overriding their
+  -- -- default behavior. For example, here we set the section for
+  -- -- cursor location to LINE:COLUMN
+  -- ---@diagnostic disable-next-line: duplicate-set-field
+  -- statusline.section_location = function()
+  -- return '%2l:%-2v'
+  -- end
 
-      -- -- ... and there is more!
-      -- --  Check out: https://github.com/echasnovski/mini.nvim
-    -- end,
+  -- -- ... and there is more!
+  -- --  Check out: https://github.com/echasnovski/mini.nvim
+  -- end,
   -- },
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
@@ -1004,26 +1025,26 @@ local function toggle_telescope(harpoon_files)
   --    For additional information, see `:help lazy.nvim-lazy.nvim-structuring-your-plugins`
   -- { import = 'custom.plugins' },
 }, {
-  ui = {
-    -- If you are using a Nerd Font: set icons to an empty table which will use the
-    -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
-    icons = vim.g.have_nerd_font and {} or {
-      cmd = '⌘',
-      config = '🛠',
-      event = '📅',
-      ft = '📂',
-      init = '⚙',
-      keys = '🗝',
-      plugin = '🔌',
-      runtime = '💻',
-      require = '🌙',
-      source = '📄',
-      start = '🚀',
-      task = '📌',
-      lazy = '💤 ',
+    ui = {
+      -- If you are using a Nerd Font: set icons to an empty table which will use the
+      -- default lazy.nvim defined Nerd Font icons, otherwise define a unicode icons table
+      icons = vim.g.have_nerd_font and {} or {
+        cmd = '⌘',
+        config = '🛠',
+        event = '📅',
+        ft = '📂',
+        init = '⚙',
+        keys = '🗝',
+        plugin = '🔌',
+        runtime = '💻',
+        require = '🌙',
+        source = '📄',
+        start = '🚀',
+        task = '📌',
+        lazy = '💤 ',
+      },
     },
-  },
-})
+  })
 
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
