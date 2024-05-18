@@ -423,6 +423,12 @@ require('lazy').setup({
   -- },
 
   {
+    "mbbill/undotree",
+    config = function()
+      vim.keymap.set('n', '<leader>vu', ':UndotreeToggle<CR>')
+    end
+  },
+  {
     "folke/flash.nvim",
     event = "VeryLazy",
     ---@type Flash.Config
