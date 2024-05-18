@@ -195,8 +195,8 @@ require('lazy').setup({
   {
     "sindrets/diffview.nvim",
     config = function()
-      vim.keymap.set('n', '<leader>gd', ':DiffviewOpen<CR>' )
-      vim.keymap.set('n', '<leader>gg', ':DiffviewClose<CR>' )
+      vim.keymap.set('n', '<leader>do', ':DiffviewOpen<CR>' )
+      vim.keymap.set('n', '<leader>dp', ':DiffviewClose<CR>' )
     end
   },
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
