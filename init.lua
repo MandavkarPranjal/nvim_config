@@ -183,6 +183,22 @@ require('lazy').setup({
   --
   -- See `:help gitsigns` to understand what the configuration keys do
   {
+    "rmagatti/auto-session",
+    config = function()
+      require("auto-session").setup {
+        log_level = "error",
+
+        cwd_change_handling = {
+          restore_upcoming_session = true, -- already the default, no need to specify like this, only here as an example
+          pre_cwd_changed_hook = nil, -- already the default, no need to specify like this, only here as an example
+          post_cwd_changed_hook = function() -- example refreshing the lualine status line _after_ the cwd changes
+            require("lualine").refresh() -- refresh lualine so the new session name is displayed in the status bar
+          end,
+        },
+      }
+    end
+  },
+  {
     "NeogitOrg/neogit",
     dependencies = {
       "nvim-lua/plenary.nvim",         -- required
@@ -366,21 +382,21 @@ require('lazy').setup({
     end
   },
   --This is my config for neo-tree
-  {
-    "nvim-neo-tree/neo-tree.nvim",
-    branch = "v3.x",
-    dependencies = {
-      "nvim-lua/plenary.nvim",
-      "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
-      "MunifTanjim/nui.nvim",
-    },
-    config = function ()
-      vim.keymap.set('n', '<leader>n', ':Neotree toggle<CR>', {})
-      vim.keymap.set('n', '<leader>t', ':terminal<CR>', {})
-      vim.g.neotree_enabled = 1
-      vim.g.neotree_show_hidden = 1
-    end
-  },
+  -- {
+  --   "nvim-neo-tree/neo-tree.nvim",
+  --   branch = "v3.x",
+  --   dependencies = {
+  --     "nvim-lua/plenary.nvim",
+  --     "nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+  --     "MunifTanjim/nui.nvim",
+  --   },
+  --   config = function ()
+  --     vim.keymap.set('n', '<leader>n', ':Neotree toggle<CR>', {})
+  --     vim.keymap.set('n', '<leader>t', ':terminal<CR>', {})
+  --     vim.g.neotree_enabled = 1
+  --     vim.g.neotree_show_hidden = 1
+  --   end
+  -- },
 
   {
     "tpope/vim-fugitive"
