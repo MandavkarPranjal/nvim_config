@@ -67,8 +67,8 @@ vim.opt.splitbelow = true
 -- Sets how neovim will display certain whitespace characters in the editor.
 --  See `:help 'list'`
 --  and `:help 'listchars'`
-vim.opt.list = true
-vim.opt.listchars = { trail = '·', nbsp = '␣' }
+-- vim.opt.list = true
+-- vim.opt.listchars = { trail = '·', nbsp = '␣' }
 
 -- Preview substitutions live, as you type!
 vim.opt.inccommand = 'split'
@@ -108,7 +108,6 @@ vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzz")
 vim.keymap.set("n", "N", "Nzz")
 
-vim.keymap.set("n", "dw", "dwi")
 
 -- TIP: Disable arrow keys in normal mode
 vim.keymap.set('n', '<left>', '<cmd>echo "Use h to move!!"<CR>')
@@ -183,22 +182,22 @@ require('lazy').setup({
   --    require('gitsigns').setup({ ... })
   --
   -- See `:help gitsigns` to understand what the configuration keys do
-  {
-    "rmagatti/auto-session",
-    config = function()
-      require("auto-session").setup {
-        log_level = "error",
-
-        cwd_change_handling = {
-          restore_upcoming_session = true, -- already the default, no need to specify like this, only here as an example
-          pre_cwd_changed_hook = nil, -- already the default, no need to specify like this, only here as an example
-          post_cwd_changed_hook = function() -- example refreshing the lualine status line _after_ the cwd changes
-            require("lualine").refresh() -- refresh lualine so the new session name is displayed in the status bar
-          end,
-        },
-      }
-    end
-  },
+  -- {
+  --   "rmagatti/auto-session",
+  --   config = function()
+  --     require("auto-session").setup {
+  --       log_level = "error",
+  --
+  --       cwd_change_handling = {
+  --         restore_upcoming_session = true, -- already the default, no need to specify like this, only here as an example
+  --         pre_cwd_changed_hook = nil, -- already the default, no need to specify like this, only here as an example
+  --         post_cwd_changed_hook = function() -- example refreshing the lualine status line _after_ the cwd changes
+  --           require("lualine").refresh() -- refresh lualine so the new session name is displayed in the status bar
+  --         end,
+  --       },
+  --     }
+  --   end
+  -- },
   {
     "NeogitOrg/neogit",
     dependencies = {
