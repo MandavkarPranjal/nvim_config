@@ -229,10 +229,17 @@ require('lazy').setup({
     config = function()
       require("gitsigns").setup()
 
+      vim.keymap.set('n', '<leader>cc', ':Git commit<CR>', {})
+      vim.keymap.set('n', '<leader>pp', ':Git push<CR>', {})
+      vim.keymap.set('n', '<leader>gb', ':Git blame<CR>', {})
+
       vim.keymap.set('n', '<leader>gp', ':Gitsigns preview_hunk<CR>', {})
       vim.keymap.set('n', '<leader>gr', ':Gitsigns reset_hunk<CR>', {})
       vim.keymap.set('n', '<leader>gs', ':Gitsigns stage_hunk<CR>', {})
       vim.keymap.set('n', '<leader>gt', ':Gitsigns toggle_current_line_blame<CR>', {})
+
+      vim.keymap.set('n', ']g', ':Gitsigns next_hunk<CR>', {noremap = true, silent = true})
+      vim.keymap.set('n', '[g', ':Gitsigns prev_hunk<CR>', {noremap = true, silent = true})
     end
   },
 
