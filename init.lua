@@ -231,7 +231,7 @@ require('lazy').setup({
 
       vim.keymap.set('n', '<leader>cc', ':Git commit<CR>', {})
       vim.keymap.set('n', '<leader>pp', ':Git push<CR>', {})
-      vim.keymap.set('n', '<leader>gb', ':Git blame<CR>', {})
+      vim.keymap.set('n', '<leader>bb', ':Git blame<CR>', {})
 
       vim.keymap.set('n', '<leader>gp', ':Gitsigns preview_hunk<CR>', {})
       vim.keymap.set('n', '<leader>gr', ':Gitsigns reset_hunk<CR>', {})
@@ -384,7 +384,17 @@ require('lazy').setup({
     -- Optional dependencies
     dependencies = { "nvim-tree/nvim-web-devicons" },
     config = function()
-      require("oil").setup()
+      require("oil").setup({
+        default_file_explorer = false,
+        delete_to_trash = true,
+        view_options = {
+          show_hidden = true,
+          natural_order = true,
+        },
+        win_options = {
+          wrap = true,
+        },
+      })
       vim.keymap.set("n", "<leader>-", "<CMD>Oil<CR>", { desc = "Open parent directory" })
     end
   },
