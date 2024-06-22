@@ -175,7 +175,7 @@ require('lazy').setup({
   --    require('Comment').setup({})
 
   -- "gc" to comment visual regions/lines
-  { 'numToStr/Comment.nvim', opts = {} },
+  { 'numToStr/Comment.nvim', event = "VeryLazy", opts = {} },
 
   -- Here is a more advanced example where we pass configuration
   -- options to `gitsigns.nvim`. This is equivalent to the following Lua:
@@ -200,6 +200,7 @@ require('lazy').setup({
   -- },
   {
     "NeogitOrg/neogit",
+    event = "VeryLazy",
     dependencies = {
       "nvim-lua/plenary.nvim",         -- required
       "sindrets/diffview.nvim",        -- optional - Diff integration
@@ -210,6 +211,7 @@ require('lazy').setup({
   },
   {
     "sindrets/diffview.nvim",
+    event = "VeryLazy",
     config = function()
       vim.keymap.set('n', '<leader>do', ':DiffviewOpen<CR>' )
       vim.keymap.set('n', '<leader>dp', ':DiffviewClose<CR>' )
@@ -217,6 +219,7 @@ require('lazy').setup({
   },
   { -- Adds git related signs to the gutter, as well as utilities for managing changes
     'lewis6991/gitsigns.nvim',
+    event = "VeryLazy",
     opts = {
       signs = {
         add = { text = '+' },
@@ -377,9 +380,26 @@ require('lazy').setup({
     end,
   },
 
+  {
+    "rmagatti/auto-session",
+    event = "VeryLazy",
+    config = function()
+      local auto_session = require("auto-session")
+
+      auto_session.setup({
+        auto_restore_enabled = false,
+        auto_session_suppress_dirs = { "~/", "~/Dev/", "~/Downloads", "~/Documents" },
+      })
+
+      vim.keymap.set("n", "<leader>wr", "<cmd>SessionRestore<CR>", { desc = "Restore session for cwd" })
+      vim.keymap.set("n", "<leader>ss", "<cmd>SessionSave<CR>", { desc = "Restore session for cwd" })
+
+    end,
+  },
   -- This is my oil config
   {
     'stevearc/oil.nvim',
+    event = "VeryLazy",
     opts = {},
     -- Optional dependencies
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -415,7 +435,8 @@ require('lazy').setup({
   -- },
 
   {
-    "tpope/vim-fugitive"
+    "tpope/vim-fugitive",
+    event = "VeryLazy",
   },
   -- lazy.nvim
   -- {
@@ -456,6 +477,7 @@ require('lazy').setup({
 
   {
     "mbbill/undotree",
+    event = "VeryLazy",
     config = function()
       vim.keymap.set('n', '<leader>vu', ':UndotreeToggle<CR>')
     end
@@ -508,6 +530,7 @@ require('lazy').setup({
 
   {
     "ThePrimeagen/harpoon",
+    event = "VeryLazy",
     branch = "harpoon2",
     dependencies = {
       "nvim-lua/plenary.nvim",
