@@ -354,6 +354,9 @@ require('lazy').setup({
       vim.keymap.set('n', '<leader>gB', builtin.git_branches, { desc = '[C]heckout [B}ranch' })
       vim.keymap.set('n', '<leader>gb', builtin.git_bcommits, { desc = '[G]it [F]ile [C]ommit' })
       vim.keymap.set('n', '<leader>gc', builtin.git_commits, { desc = '[G]it [C]ommits' })
+      vim.keymap.set('n', '<leader>vq', builtin.quickfix, { desc = 'Vim quickfix list' })
+      vim.keymap.set('n', '<leader>vqh', builtin.quickfixhistory, { desc = 'Vim quickfix list [history]' })
+      vim.keymap.set('n', '<leader>vt', ":TodoTelescope<CR>", { desc = "Search all [V]im [T]odo's" })
 
       -- Slightly advanced example of overriding default behavior and theme
       vim.keymap.set('n', '<leader>/', function()
