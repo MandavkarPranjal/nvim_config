@@ -396,6 +396,7 @@ require('lazy').setup({
 
       vim.keymap.set("n", "<leader>wr", "<cmd>SessionRestore<CR>", { desc = "Restore session for cwd" })
       vim.keymap.set("n", "<leader>ss", "<cmd>SessionSave<CR>", { desc = "Restore session for cwd" })
+      vim.keymap.set("n", "<leader>sd", "<cmd>SessionDelete<CR>", { desc = "Delete session for cwd" })
 
     end,
   },
