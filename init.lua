@@ -221,6 +221,7 @@ require('lazy').setup({
     config = function()
       require("gitsigns").setup()
 
+      vim.keymap.set('n', '<leader>gg', ':Git<CR>', {})
       vim.keymap.set('n', '<leader>cc', ':Git commit<CR>', {})
       vim.keymap.set('n', '<leader>pp', ':Git push<CR>', {})
       vim.keymap.set('n', '<leader>bb', ':Git blame<CR>', {})
@@ -399,7 +400,12 @@ require('lazy').setup({
     config = function()
       require("oil").setup({
         default_file_explorer = false,
-        delete_to_trash = true,
+        columns = {
+          "icon",
+          -- "permissions",
+          -- "size",
+          -- "mtime",
+        },
         view_options = {
           show_hidden = true,
           natural_order = true,
