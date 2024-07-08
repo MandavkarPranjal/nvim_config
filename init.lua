@@ -98,8 +98,8 @@ vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagn
 --
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
-vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
-vim.keymap.set('n', '<leader>t', ':terminal<CR>', {})
+-- vim.keymap.set('t', '<Esc><Esc>', '<C-\\><C-n>', { desc = 'Exit terminal mode' })
+-- vim.keymap.set('n', '<leader>t', ':terminal<CR>', {})
 vim.o.shell = 'powershell.exe'
 
 vim.keymap.set("n", "<C-d>", "<C-d>zz")
@@ -234,6 +234,62 @@ require('lazy').setup({
       vim.keymap.set('n', ']g', ':Gitsigns next_hunk<CR>', {noremap = true, silent = true})
       vim.keymap.set('n', '[g', ':Gitsigns prev_hunk<CR>', {noremap = true, silent = true})
     end
+  },
+
+  {
+    -- amongst your other plugins
+    {'akinsho/toggleterm.nvim',
+      version = "*",
+      event = "VeryLazy",
+      config = function ()
+        local status, toggleterm = pcall(require, 'toggleterm')
+        if (not status) then return end
+
+        vim.cmd("let &shell = has('win32') ? 'powershell' : 'pwsh'")
+        vim.cmd("let &shellcmdflag = '-NoLogo -NoProfile -ExecutionPolicy RemoteSigned -Command [Console]::InputEncoding=[Console]::OutputEncoding=[System.Text.Encoding]::UTF8;'")
+        vim.cmd("let &shellredir = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'")
+        vim.cmd("let &shellpipe = '2>&1 | Out-File -Encoding UTF8 %s; exit $LastExitCode'")
+        vim.cmd("set shellquote= shellxquote=")
+
+        toggleterm.setup({
+          size = 10,
+          open_mapping = [[<C-\>]],
+          hide_numbers = true,
+          shade_filetypes = {},
+          shade_terminals = true,
+          shading_factor = 2,
+          start_in_insert = true,
+          insert_mappings = true,
+          persist_size = true,
+          close_on_exit = true,
+          direction = 'float',
+          float_opts = {
+            border = "curved",
+            winblend = 0,
+            highlights = {
+              border = "Normal",
+              background = "Normal"
+            }
+          }
+        })
+
+        local Terminal = require('toggleterm.terminal').Terminal
+        local node = Terminal:new({ cmd = 'node', hidden = true })
+
+        function RUN_NODE()
+          node:toggle()
+        end
+
+        local lazygit = Terminal:new({ cmd = 'lazygit', hidden = true })
+
+        function RUN_LAZYGIT()
+          lazygit:toggle()
+        end
+
+        vim.api.nvim_buf_set_keymap(0, 'n', '<leader>tn', '<Cmd>lua RUN_NODE()<CR>', {})
+        vim.api.nvim_buf_set_keymap(0, 'n', '<leader>tl', '<Cmd>lua RUN_LAZYGIT()<CR>', {})
+      end
+    },
   },
 
   -- NOTE: Plugins can also be configured to run Lua code when they are loaded.
