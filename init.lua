@@ -643,8 +643,8 @@ require('lazy').setup({
       harpoon:setup()
       -- REQUIRED
 
-      vim.keymap.set("n", "<leader>ha", function() harpoon:list():add() end)
-      vim.keymap.set("n", "<leader>hd", function () harpoon:list():remove()end)
+      vim.keymap.set("n", "<leader>ha", function() harpoon:list():add() end, { desc = "add to harpoon list" })
+      vim.keymap.set("n", "<leader>hd", function () harpoon:list():remove()end, { desc = "delete from harpoon list" })
       -- This functionality is done just below Telescope config for harpoon
       --      vim.keymap.set("n", "<C-e>", function() harpoon.ui:toggle_quick_menu(harpoon:list()) end)
 
