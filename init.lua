@@ -1,4 +1,4 @@
--- Set <space> as the leader key
+-- Set <space> as the leader keyin
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are loaded (otherwise wrong leader will be used)
 vim.g.mapleader = " "
@@ -398,7 +398,7 @@ require("lazy").setup({
 			vim.keymap.set("n", "<leader>ff", builtin.find_files, { desc = "[S]earch [F]iles" })
 			vim.keymap.set("n", "<leader>vss", builtin.builtin, { desc = "[S]earch [S]elect Telescope" })
 			vim.keymap.set("n", "<leader>gf", builtin.git_files, { desc = "[S]earch [G]it Telescope" })
-			vim.keymap.set("n", "<leader>sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
+			vim.keymap.set("n", "sw", builtin.grep_string, { desc = "[S]earch current [W]ord" })
 			vim.keymap.set("n", "<leader>fg", builtin.live_grep, { desc = "[S]earch by [G]rep" })
 			vim.keymap.set("n", "<leader>vd", builtin.diagnostics, { desc = "[S]earch [D]iagnostics" })
 			vim.keymap.set("n", "<leader>sr", builtin.resume, { desc = "[S]earch [R]esume" })
@@ -596,26 +596,26 @@ require("lazy").setup({
 		event = "VeryLazy",
 		---@type Flash.Config
 		opts = {},
-    -- stylua: ignore
-    keys = {
-      { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-      { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
-      { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
-      { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
-      { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
-    },
+	   -- stylua: ignore
+	   keys = {
+	     { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+	     { "S", mode = { "n", "x", "o" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+	     { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+	     { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+	     { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+	   },
 	},
 
-	-- {
-	--   "bluz71/vim-moonfly-colors",
-	--   name = "moonfly",
-	--   lazy = false,
-	--   priority = 1000,
-	--   config = function()
-	--     -- Lua initialization file
-	--     vim.cmd [[colorscheme moonfly]]
-	--   end
-	-- },
+	{
+		"bluz71/vim-moonfly-colors",
+		name = "moonfly",
+		lazy = false,
+		priority = 1000,
+		config = function()
+			-- Lua initialization file
+			-- vim.cmd.colorscheme("moonfly")
+		end,
+	},
 	{
 		"morhetz/gruvbox",
 		-- priority = 1000,
@@ -655,6 +655,7 @@ require("lazy").setup({
 				disable_inline_completion = false, -- disables inline completion for use with cmp
 				disable_keymaps = false, -- disables built in keymaps for more manual control
 			})
+			vim.keymap.set("n", "<leader>sp", ":SupermavenStop<CR>")
 		end,
 	},
 
